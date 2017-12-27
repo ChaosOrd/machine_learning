@@ -22,7 +22,7 @@ X = X[:, 1:]
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.cross_validation import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # Feature Scaling
 """from sklearn.preprocessing import StandardScaler
@@ -39,3 +39,20 @@ regressor.fit(X_train, y_train)
 
 # Predicting the Test set results
 y_pred = regressor.predict(X_test)
+
+
+# Building the optimal model using Backward elimination
+import statsmodels.formula.api as sm
+X = np.append(arr=np.ones((X.shape[0], 1), dtype=np.int), values=X, axis=1)
+X_opt = X[:, range(6)]
+regressor_OLS = sm.OLS(endog=y, exog=X_opt).fit()
+print(regressor_OLS.summary())
+X_opt = X[:, [0, 1, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog=y, exog=X_opt).fit()
+print(regressor_OLS.summary())
+X_opt = X[:, [0, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog=y, exog=X_opt).fit()
+print(regressor_OLS.summary())
+X_opt = X[:, [0, 3, 5]]
+regressor_OLS = sm.OLS(endog=y, exog=X_opt).fit()
+print(regressor_OLS.summary())
